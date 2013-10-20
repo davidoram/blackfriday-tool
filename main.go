@@ -18,7 +18,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/russross/blackfriday"
+	"github.com/davidoram/blackfriday"
 	"io/ioutil"
 	"os"
 	"runtime/pprof"
