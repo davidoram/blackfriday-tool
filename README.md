@@ -23,6 +23,7 @@ Here is the help message for the tool:
       ./blackfriday-tool [options] [inputfile [outputfile]]
 
     Options:
+      -flower=true: Invoke flower processing on code blocks
       -cpuprofile="": Write cpu profile to a file
       -css="": Link to a CSS stylesheet (implies -page)
       -fractions=true: Use improved fraction rules for smartypants

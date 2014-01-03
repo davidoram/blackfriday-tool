@@ -29,9 +29,11 @@ const DEFAULT_TITLE = ""
 
 func main() {
 	// parse command-line options
-	var page, toc, toconly, xhtml, latex, smartypants, latexdashes, fractions bool
+	var flower, page, toc, toconly, xhtml, latex, smartypants, latexdashes, fractions bool
 	var css, cpuprofile string
 	var repeat int
+	flag.BoolVar(&flower, "flower", false,
+		"Invoke flower processing on code blocks")
 	flag.BoolVar(&page, "page", false,
 		"Generate a standalone HTML page (implies -latex=false)")
 	flag.BoolVar(&toc, "toc", false,
@@ -56,8 +58,9 @@ func main() {
 		"Process the input multiple times (for benchmarking)")
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Blackfriday Markdown Processor v"+blackfriday.VERSION+
-			"\nAvailable at http://github.com/russross/blackfriday\n\n"+
+			"\nAvailable at http://github.com/davidoram/blackfriday\n\n"+
 			"Copyright © 2011 Russ Ross <russ@russross.com>\n"+
+			"Flower extension 2013 Dave Oram\n"+
 			"Distributed under the Simplified BSD License\n"+
 			"See website for details\n\n"+
 			"Usage:\n"+
@@ -123,8 +126,13 @@ func main() {
 
 	var renderer blackfriday.Renderer
 	if latex {
-		// render the data into LaTeX
-		renderer = blackfriday.LatexRenderer(0)
+		if flower {
+			inner_renderer := blackfriday.LatexRenderer(0)
+			renderer = blackfriday.WrappedRenderer(inner_renderer)
+		} else {
+			// render the data into LaTeX
+			renderer = blackfriday.LatexRenderer(0)
+		}
 	} else {
 		// render the data into HTML
 		htmlFlags := 0
@@ -140,6 +148,9 @@ func main() {
 		if latexdashes {
 			htmlFlags |= blackfriday.HTML_SMARTYPANTS_LATEX_DASHES
 		}
+		if flower {
+			htmlFlags |= blackfriday.HTML_FLOWER
+		}
 		title := ""
 		if page {
 			htmlFlags |= blackfriday.HTML_COMPLETE_PAGE
@@ -151,7 +162,12 @@ func main() {
 		if toc {
 			htmlFlags |= blackfriday.HTML_TOC
 		}
-		renderer = blackfriday.HtmlRenderer(htmlFlags, title, css)
+		if flower {
+			inner_renderer := blackfriday.HtmlRenderer(htmlFlags, title, css)
+			renderer = blackfriday.WrappedRenderer(inner_renderer)
+		} else {
+			renderer = blackfriday.HtmlRenderer(htmlFlags, title, css)
+		}
 	}
 
 	// parse and render
