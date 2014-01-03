@@ -4,7 +4,7 @@ Blackfriday Tool
 Blackfriday is a [Markdown][1] processor implemented in [Go][2]. It
 lives on github, where you can find more information about it:
 
-* <http://github.com/russross/blackfriday>
+* <http://github.com/davidoram/blackfriday>
 
 Blackfriday-tool is an example command-line tool that uses
 blackfriday to process markdown input. It provides a complete
@@ -13,9 +13,10 @@ example of how to use blackfriday in a Go project.
 Here is the help message for the tool:
 
     Blackfriday Markdown Processor v1.1
-    Available at http://github.com/russross/blackfriday
+    Available at http://github.com/davidoram/blackfriday
 
     Copyright © 2011 Russ Ross <russ@russross.com>
+	Flower extension 2013 Dave Oram
     Distributed under the Simplified BSD License
     See website for details
 
@@ -23,7 +24,8 @@ Here is the help message for the tool:
       ./blackfriday-tool [options] [inputfile [outputfile]]
 
     Options:
-      -flower=true: Invoke flower processing on code blocks. See examples at <https://github.com/davidoram/blackfriday>
+      -flower=true: Invoke flower processing on code blocks. 
+                    See examples at <https://github.com/davidoram/blackfriday>
       -cpuprofile="": Write cpu profile to a file
       -css="": Link to a CSS stylesheet (implies -page)
       -fractions=true: Use improved fraction rules for smartypants
